@@ -1,0 +1,250 @@
+import React, { useState } from 'react';
+import { Language, Theme } from '../../types';
+import { Layers, Trophy, Info, CheckCircle, XCircle } from 'lucide-react';
+import { getCittaChallenges, UI_TEXT } from '../../constants';
+
+interface CittaBuilderProps {
+    language: Language;
+    theme: Theme;
+}
+
+const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
+    const [mode, setMode] = useState<'build' | 'challenge'>('build');
+    const [root, setRoot] = useState<'greed' | 'hatred' | 'delusion' | 'beautiful'>('greed');
+    const [feeling, setFeeling] = useState<'joy' | 'neutral' | 'misery'>('neutral');
+    const [view, setView] = useState<'wrong' | 'none' | 'right'>('none');
+
+    const [challengeIdx, setChallengeIdx] = useState(0);
+    const [challengeStatus, setChallengeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    const challenges = getCittaChallenges(language);
+    const currentChallenge = challenges[challengeIdx];
+    const ui = UI_TEXT[language];
+
+    // Logic remains English-key based, we translate display only
+    const warnings: string[] = [];
+
+    if (root === 'hatred' && feeling === 'joy') warnings.push(language === 'si' ? "ද්වේෂය (Hatred) සමඟ සොම්නස (Joy) පැවතිය නොහැක." : "Hatred cannot coexist with Joy.");
+    if (root === 'hatred' && feeling === 'neutral') warnings.push(language === 'si' ? "ද්වේෂය ඉතා රළු බැවින් උපේක්ෂා විය නොහැක. එය දොම්නස් විය යුතුයි." : "Hatred is too harsh for Neutral feeling. It must be Misery.");
+    if (root === 'greed' && feeling === 'misery') warnings.push(language === 'si' ? "ලෝභය (Greed) කිසිවිටෙකත් දොම්නස සමඟ නූපදී." : "Greed never arises with Misery.");
+    if (root === 'delusion' && feeling === 'joy') warnings.push(language === 'si' ? "මෝහ මූලික සිත් උපේක්ෂා සහගත පමණි." : "Delusion-rooted consciousness is always Neutral.");
+    if (root === 'beautiful' && view === 'wrong') warnings.push(language === 'si' ? "කුසල් සිත් වල මිත්‍යා දෘෂ්ටිය (Wrong View) තිබිය නොහැක." : "Wholesome thoughts cannot have Wrong View.");
+    if (root !== 'beautiful' && view === 'right') warnings.push(language === 'si' ? "ප්‍රඥාව (Right View) ඇත්තේ ශෝභන සිත් වල පමණි." : "Right View (Wisdom) only exists in Beautiful Consciousness.");
+
+    const isValid = warnings.length === 0;
+
+    const getResultName = () => {
+        if (!isValid) return ui.wrongConfig;
+
+        // Construct simplified name for display
+        let name = "";
+        if (feeling === 'joy') name += language === 'si' ? "සොම්නස් සහගත " : "Joyful ";
+        if (feeling === 'neutral') name += language === 'si' ? "උපේක්ෂා සහගත " : "Neutral ";
+        if (feeling === 'misery') name += language === 'si' ? "දොම්නස් සහගත " : "Miserable ";
+
+        if (root === 'greed') {
+            name += view === 'wrong' ? (language === 'si' ? "දිට්ඨිගත සම්පයුක්ත" : "with Wrong View") : (language === 'si' ? "දිට්ඨිගත විප්පයුක්ත" : "dissociated from Wrong View");
+            return name + (language === 'si' ? " (ලෝභ සිත)" : " (Greed Citta)");
+        }
+        if (root === 'hatred') {
+            name += language === 'si' ? "පටිඝ සම්පයුක්ත" : "associated with Aversion";
+            return name + (language === 'si' ? " (ද්වේෂ සිත)" : " (Hatred Citta)");
+        }
+        if (root === 'delusion') {
+            name += language === 'si' ? "විචිකිච්ඡා සම්පයුක්ත" : "associated with Doubt";
+            return name + (language === 'si' ? " (මෝහ සිත)" : " (Delusion Citta)");
+        }
+        if (root === 'beautiful') {
+            name += view === 'right' ? (language === 'si' ? "ඥාන සම්පයුක්ත" : "with Wisdom") : (language === 'si' ? "ඥාන විප්පයුක්ත" : "without Wisdom");
+            return name + (language === 'si' ? " (මහා කුසල් සිත)" : " (Wholesome Citta)");
+        }
+        return "Unknown Citta";
+    };
+
+    const getOrbColor = () => {
+        if (!isValid) return 'bg-gray-400 border-gray-300';
+        switch (root) {
+            case 'greed': return 'bg-red-600 shadow-xl shadow-red-200 dark:shadow-red-900/50';
+            case 'hatred': return 'bg-emerald-800 shadow-xl shadow-emerald-200 dark:shadow-emerald-900/50';
+            case 'delusion': return 'bg-pink-700 shadow-xl shadow-pink-200 dark:shadow-pink-900/50';
+            case 'beautiful': return 'bg-amber-400 shadow-xl shadow-amber-200 dark:shadow-amber-900/50';
+            default: return 'bg-gray-400';
+        }
+    };
+
+    const checkChallenge = () => {
+        if (!isValid) {
+            setChallengeStatus('error');
+            return;
+        }
+
+        const matches =
+            root === currentChallenge.criteria.root &&
+            feeling === currentChallenge.criteria.feeling &&
+            view === currentChallenge.criteria.view;
+
+        setChallengeStatus(matches ? 'success' : 'error');
+    };
+
+    const nextChallenge = () => {
+        setChallengeIdx((prev) => (prev + 1) % challenges.length);
+        setChallengeStatus('idle');
+        setRoot('greed');
+        setFeeling('neutral');
+        setView('none');
+    };
+
+    const translateKey = (key: string) => {
+        if (language === 'en') return key;
+        switch (key) {
+            case 'greed': return 'ලෝභ';
+            case 'hatred': return 'ද්වේෂ';
+            case 'delusion': return 'මෝහ';
+            case 'beautiful': return 'ශෝභන';
+            case 'joy': return 'සොම්නස්';
+            case 'neutral': return 'උපේක්ෂා';
+            case 'misery': return 'දොම්නස්';
+            case 'wrong': return 'මිත්‍යා දෘෂ්ටි';
+            case 'none': return 'දෘෂ්ටි රහිත';
+            case 'right': return 'ඥාන සම්පයුක්ත';
+            default: return key;
+        }
+    };
+
+    return (
+        <div className="mt-4 md:mt-8 pb-20">
+            <div className="flex gap-4 mb-6">
+                <button
+                    onClick={() => { setMode('build'); setChallengeStatus('idle'); }}
+                    className={`flex-1 py-3 rounded-xl border font-bold transition-all flex items-center justify-center gap-2 active:scale-95 touch-manipulation ${mode === 'build' ? 'bg-[#7B1113] border-[#7B1113] text-white shadow-md' : (theme === 'dark' ? 'bg-slate-800 border-slate-700 text-gray-400' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50')}`}
+                >
+                    <Layers size={18} /> <span className="text-sm">{ui.buildMode}</span>
+                </button>
+                <button
+                    onClick={() => { setMode('challenge'); setChallengeStatus('idle'); }}
+                    className={`flex-1 py-3 rounded-xl border font-bold transition-all flex items-center justify-center gap-2 active:scale-95 touch-manipulation ${mode === 'challenge' ? 'bg-amber-100 border-amber-300 text-[#7B1113] dark:bg-amber-900/40 dark:text-amber-200 dark:border-amber-700' : (theme === 'dark' ? 'bg-slate-800 border-slate-700 text-gray-400' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50')}`}
+                >
+                    <Trophy size={18} /> <span className="text-sm">{ui.challengeMode}</span>
+                </button>
+            </div>
+
+            <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                    {mode === 'challenge' && (
+                        <div className={`border p-6 rounded-2xl relative overflow-hidden shadow-sm ${theme === 'dark' ? 'bg-amber-900/10 border-amber-800' : 'bg-amber-50 border-amber-200'}`}>
+                            <div className="absolute top-0 right-0 p-1 bg-[#7B1113] text-white text-xs font-bold px-3 rounded-bl-lg">{ui.challengeMode} {challengeIdx + 1}</div>
+                            <h3 className={`font-serif text-xl font-bold mb-2 ${theme === 'dark' ? 'text-amber-400' : 'text-[#7B1113]'}`}>{currentChallenge.name}</h3>
+                            <p className={`text-sm mb-4 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{currentChallenge.description}</p>
+
+                            {challengeStatus === 'error' && (
+                                <div className={`border p-3 rounded-lg text-sm flex gap-2 items-start animate-fade-in ${theme === 'dark' ? 'bg-red-900/30 border-red-800 text-red-200' : 'bg-red-50 border-red-200 text-red-700'}`}>
+                                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                    <span>{ui.incorrect} {ui.help}: {currentChallenge.hint}</span>
+                                </div>
+                            )}
+
+                            {challengeStatus === 'success' && (
+                                <div className={`border p-3 rounded-lg text-sm flex flex-col gap-3 animate-fade-in ${theme === 'dark' ? 'bg-emerald-900/30 border-emerald-800 text-emerald-200' : 'bg-emerald-50 border-emerald-200 text-emerald-700'}`}>
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle className="w-4 h-4" />
+                                        <span className="font-bold">{ui.success}</span>
+                                    </div>
+                                    <button onClick={nextChallenge} className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-xs font-bold transition w-full md:w-auto shadow-sm">
+                                        {ui.next}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    <div className={`p-4 md:p-6 rounded-2xl border shadow-lg space-y-6 ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
+                        <div>
+                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">1. Root (Hetu)</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                                {['greed', 'hatred', 'delusion', 'beautiful'].map(r => (
+                                    <button
+                                        key={r}
+                                        onClick={() => setRoot(r as any)}
+                                        className={`p-3 rounded-lg border text-sm font-medium capitalize transition active:scale-95 touch-manipulation ${root === r ? 'bg-[#7B1113] border-[#7B1113] text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
+                                    >
+                                        {translateKey(r)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">2. Feeling (Vedana)</h3>
+                            <div className="flex gap-2">
+                                {['joy', 'neutral', 'misery'].map(f => (
+                                    <button
+                                        key={f}
+                                        onClick={() => setFeeling(f as any)}
+                                        className={`flex-1 p-3 rounded-lg border text-sm font-medium capitalize transition active:scale-95 touch-manipulation ${feeling === f ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
+                                    >
+                                        {translateKey(f)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">3. View / Wisdom</h3>
+                            <div className="flex gap-2">
+                                {['wrong', 'none', 'right'].map(v => (
+                                    <button
+                                        key={v}
+                                        onClick={() => setView(v as any)}
+                                        className={`flex-1 p-3 rounded-lg border text-sm font-medium capitalize transition active:scale-95 touch-manipulation ${view === v ? 'bg-teal-600 border-teal-600 text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
+                                    >
+                                        {translateKey(v)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {mode === 'challenge' && challengeStatus !== 'success' && (
+                        <button
+                            onClick={checkChallenge}
+                            className={`w-full py-4 rounded-xl font-bold text-lg shadow-xl transition-all active:scale-95 touch-manipulation ${theme === 'dark' ? 'bg-slate-100 text-slate-900 hover:bg-white' : 'bg-gray-900 hover:bg-black text-white'}`}
+                        >
+                            {ui.check}
+                        </button>
+                    )}
+                </div>
+
+                <div className={`rounded-3xl p-8 border flex flex-col items-center justify-center relative min-h-[300px] md:min-h-[400px] shadow-inner ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-gray-100 border-gray-200'}`}>
+                    {warnings.length > 0 && (
+                        <div className={`absolute inset-4 backdrop-blur-sm border flex flex-col items-center justify-center p-4 text-center rounded-2xl z-20 animate-in fade-in zoom-in duration-200 shadow-xl ${theme === 'dark' ? 'bg-slate-900/95 border-red-800' : 'bg-white/95 border-red-200'}`}>
+                            <XCircle className="w-10 h-10 text-red-600 mb-3" />
+                            <h3 className={`text-base font-bold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>{ui.wrongConfig}</h3>
+                            {warnings.map((w, i) => (
+                                <p key={i} className="text-red-500 text-xs md:text-sm mb-1">{w}</p>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="relative">
+                        <div className={`w-40 h-40 md:w-48 md:h-48 rounded-full transition-all duration-1000 ${getOrbColor()} flex items-center justify-center`}>
+                            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border border-white/30 flex items-center justify-center">
+                                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-white/20"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-8 relative z-10">
+                        <h2 className={`text-xl md:text-2xl font-serif font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{getResultName()}</h2>
+                        <div className="flex gap-2 justify-center mt-2 flex-wrap">
+                            <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(root)}</span>
+                            <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(feeling)}</span>
+                            {view !== 'none' && <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(view)}</span>}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default CittaBuilder;
