@@ -106,23 +106,23 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
     const airScale = 0.5 + (elements.air / 60);
 
     return (
-        <div className="mt-8 pb-20 max-w-5xl mx-auto">
-            <div className="flex gap-4 mb-4 justify-center">
-                <button onClick={() => setActiveTab('visual')} className={`px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 ${activeTab === 'visual' ? (theme === 'dark' ? 'bg-gray-100 text-gray-900' : 'bg-gray-900 text-white') : (theme === 'dark' ? 'bg-slate-800 text-gray-400' : 'bg-gray-100 text-gray-500')}`}><Eye size={16} /> {ui.visual}</button>
-                <button onClick={() => setActiveTab('analysis')} className={`px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 ${activeTab === 'analysis' ? (theme === 'dark' ? 'bg-gray-100 text-gray-900' : 'bg-gray-900 text-white') : (theme === 'dark' ? 'bg-slate-800 text-gray-400' : 'bg-gray-100 text-gray-500')}`}><Microscope size={16} /> {ui.analysis}</button>
+        <div className="mt-2 pb-6 max-w-3xl mx-auto">
+            <div className="flex gap-2 mb-2 justify-center">
+                <button onClick={() => setActiveTab('visual')} className={`px-2 py-1 rounded-full text-[10px] font-bold transition flex items-center gap-1.5 ${activeTab === 'visual' ? (theme === 'dark' ? 'bg-gray-100 text-gray-900' : 'bg-gray-900 text-white') : (theme === 'dark' ? 'bg-slate-800 text-gray-400' : 'bg-gray-100 text-gray-500')}`}><Eye size={12} /> {ui.visual}</button>
+                <button onClick={() => setActiveTab('analysis')} className={`px-2 py-1 rounded-full text-[10px] font-bold transition flex items-center gap-1.5 ${activeTab === 'analysis' ? (theme === 'dark' ? 'bg-gray-100 text-gray-900' : 'bg-gray-900 text-white') : (theme === 'dark' ? 'bg-slate-800 text-gray-400' : 'bg-gray-100 text-gray-500')}`}><Microscope size={12} /> {ui.analysis}</button>
             </div>
 
-            <div className={`border rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-200'}`}>
+            <div className={`border rounded-xl overflow-hidden shadow-lg transition-all duration-500 ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-200'}`}>
 
                 {/* TOP SECTION: VISUALIZER */}
-                <div className={`p-6 md:p-10 flex flex-col items-center justify-center relative min-h-[500px] transition-colors duration-700 ${info.bg} overflow-hidden`}>
+                <div className={`p-3 md:p-4 flex flex-col items-center justify-center relative min-h-[250px] transition-colors duration-700 ${info.bg} overflow-hidden`}>
 
                     <div className="absolute inset-0 opacity-10 pointer-events-none">
                         <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-400 via-transparent to-transparent"></div>
                     </div>
 
                     {/* VISUALS (Same as before, simplified for brevity but fully functional) */}
-                    <div className="relative w-80 h-80 flex items-center justify-center perspective-1000">
+                    <div className="relative w-48 h-48 flex items-center justify-center perspective-1000">
                         {/* AIR */}
                         <div className="absolute inset-0 pointer-events-none transition-transform duration-500" style={{ transform: `scale(${airScale})` }}>
                             {elements.air > 20 && (
@@ -180,8 +180,8 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
                     </div>
 
                     {/* INFO OVERLAY */}
-                    <div className="mt-8 text-center relative z-10 max-w-2xl animate-fade-in">
-                        <h2 className={`text-4xl font-serif font-bold mb-1 ${info.color}`}>{info.title}</h2>
+                    <div className="mt-2 text-center relative z-10 max-w-lg animate-fade-in">
+                        <h2 className={`text-xl font-serif font-bold mb-0 ${info.color}`}>{info.title}</h2>
                         <div className="flex items-center justify-center gap-2 mb-4">
                             <span className={`h-1 w-8 rounded-full ${info.accent}`}></span>
                             <p className={`text-sm font-bold uppercase tracking-widest opacity-80 ${info.color}`}>{info.subtitle}</p>
@@ -213,9 +213,9 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
 
                                 <button
                                     onClick={handleTouch}
-                                    className={`mt-4 px-6 py-2 rounded-full text-sm font-bold flex items-center gap-2 mx-auto shadow-lg active:scale-95 transition ${theme === 'dark' ? 'bg-slate-100 text-slate-900 hover:bg-white' : 'bg-gray-900 hover:bg-black text-white'}`}
+                                    className={`mt-1.5 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1.5 mx-auto shadow-sm active:scale-95 transition ${theme === 'dark' ? 'bg-slate-100 text-slate-900 hover:bg-white' : 'bg-gray-900 hover:bg-black text-white'}`}
                                 >
-                                    <Fingerprint size={16} /> {ui.touch}
+                                    <Fingerprint size={12} /> {ui.touch}
                                 </button>
 
                                 {touchFeedback && (
@@ -229,9 +229,9 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
                 </div>
 
                 {/* BOTTOM SECTION: SLIDERS */}
-                <div className={`border-t p-8 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                        <div className="space-y-6">
+                <div className={`border-t p-3 md:p-4 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+                        <div className="space-y-3">
                             <div>
                                 <div className="flex justify-between mb-2">
                                     <label className={`text-sm font-bold flex items-center gap-2 ${theme === 'dark' ? 'text-emerald-400' : 'text-emerald-900'}`}><Mountain size={14} /> Earth</label>
@@ -247,7 +247,7 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
                                 <input type="range" min="10" max="100" value={elements.water} onChange={(e) => handleChange('water', parseInt(e.target.value))} className="w-full h-2 bg-cyan-200 rounded-lg appearance-none cursor-pointer accent-cyan-600" />
                             </div>
                         </div>
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             <div>
                                 <div className="flex justify-between mb-2">
                                     <label className={`text-sm font-bold flex items-center gap-2 ${theme === 'dark' ? 'text-orange-400' : 'text-orange-900'}`}><Flame size={14} /> Fire</label>
