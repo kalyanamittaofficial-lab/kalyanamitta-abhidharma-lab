@@ -219,7 +219,7 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
                                 </button>
 
                                 {touchFeedback && (
-                                    <div className={`mt-3 p-3 rounded-lg text-sm font-bold animate-fade-in ${touchFeedback.type === 'intangible' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (theme === 'dark' ? 'bg-slate-800 text-gray-200' : 'bg-gray-200 text-gray-800')}`}>
+                                    <div className={`mt-3 p-3 rounded-lg text-sm font-bold animate-in fade-in slide-in-from-bottom-2 animate-shake ${touchFeedback.type === 'intangible' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (theme === 'dark' ? 'bg-slate-800 text-gray-200' : 'bg-gray-200 text-gray-800')}`}>
                                         {touchFeedback.msg}
                                     </div>
                                 )}
@@ -295,6 +295,12 @@ const ElementMixer: React.FC<ElementMixerProps> = ({ language, theme }) => {
            75% { transform: translate(1px, -1px) rotate(0deg); }
            100% { transform: translate(1px, 1px) rotate(0deg); }
         }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.3s ease-in-out; }
         .perspective-1000 {
             perspective: 1000px;
         }

@@ -80,9 +80,9 @@ const App: React.FC = () => {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed md:relative inset-y-0 left-0 z-40 w-72 md:w-64 border-r transform transition-all duration-300 ease-in-out flex flex-col shadow-2xl md:shadow-none
+        className={`fixed md:relative inset-y-0 left-0 z-40 w-72 md:w-64 border-r transform transition-all duration-300 ease-in-out flex flex-col shadow-2xl md:shadow-none overflow-hidden
         ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-200'}
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:w-0 md:-translate-x-full md:opacity-0'}`}
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-0 md:opacity-0'}`}
       >
         <div className={`p-5 border-b flex items-center justify-between h-16 ${theme === 'dark' ? 'border-slate-800' : 'border-gray-100'}`}>
           <div className="flex items-center gap-3">
@@ -106,12 +106,12 @@ const App: React.FC = () => {
                 if (isMobile) setIsSidebarOpen(false);
               }}
               className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all active:scale-[0.98] ${activeModuleId === module.id
-                  ? theme === 'dark'
-                    ? 'bg-red-900/30 text-red-200 border border-red-900/50 shadow-sm'
-                    : 'bg-amber-50 text-[#7B1113] border border-amber-200 shadow-sm'
-                  : theme === 'dark'
-                    ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-black'
+                ? theme === 'dark'
+                  ? 'bg-red-900/30 text-red-200 border border-red-900/50 shadow-sm'
+                  : 'bg-amber-50 text-[#7B1113] border border-amber-200 shadow-sm'
+                : theme === 'dark'
+                  ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-black'
                 }`}
             >
               <div className={`${activeModuleId === module.id ? 'text-[#7B1113] dark:text-red-400' : 'text-gray-400'}`}>
@@ -128,8 +128,8 @@ const App: React.FC = () => {
             <button
               onClick={toggleTheme}
               className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold border transition-colors ${theme === 'dark'
-                  ? 'bg-slate-800 border-slate-700 text-yellow-400'
-                  : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
+                ? 'bg-slate-800 border-slate-700 text-yellow-400'
+                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
                 }`}
             >
               {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
@@ -138,8 +138,8 @@ const App: React.FC = () => {
             <button
               onClick={toggleLanguage}
               className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold border transition-colors ${theme === 'dark'
-                  ? 'bg-slate-800 border-slate-700 text-gray-300'
-                  : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
+                ? 'bg-slate-800 border-slate-700 text-gray-300'
+                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
                 }`}
             >
               <Languages size={14} />
@@ -173,10 +173,10 @@ const App: React.FC = () => {
           <button
             onClick={toggleTutor}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border transition-colors active:scale-95 touch-manipulation ${isTutorOpen
-                ? 'bg-[#7B1113] text-white border-[#7B1113] shadow-md'
-                : theme === 'dark'
-                  ? 'bg-slate-800 text-gray-300 border-slate-700 hover:bg-slate-700'
-                  : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+              ? 'bg-[#7B1113] text-white border-[#7B1113] shadow-md'
+              : theme === 'dark'
+                ? 'bg-slate-800 text-gray-300 border-slate-700 hover:bg-slate-700'
+                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
               }`}
           >
             <Bot size={20} />

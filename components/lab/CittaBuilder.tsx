@@ -113,16 +113,23 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
 
     return (
         <div className="mt-2 md:mt-3 pb-8">
+            <style>{`
+                @keyframes pulse-glow {
+                    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 20px currentColor; }
+                    50% { transform: scale(1.05); opacity: 0.9; box-shadow: 0 0 40px currentColor; }
+                }
+                .animate-pulse-glow { animation: pulse-glow 3s infinite ease-in-out; }
+            `}</style>
             <div className="flex gap-2 mb-3">
                 <button
                     onClick={() => { setMode('build'); setChallengeStatus('idle'); }}
-                    className={`flex-1 py-2 rounded-lg border font-bold transition-all flex items-center justify-center gap-2 active:scale-95 touch-manipulation ${mode === 'build' ? 'bg-[#7B1113] border-[#7B1113] text-white shadow-md' : (theme === 'dark' ? 'bg-slate-800 border-slate-700 text-gray-400' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50')} text-xs md:text-sm`}
+                    className={`flex-1 py-2 rounded-lg border font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 hover:scale-[1.02] touch-manipulation ${mode === 'build' ? 'bg-[#7B1113] border-[#7B1113] text-white shadow-md' : (theme === 'dark' ? 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50')} text-xs md:text-sm`}
                 >
                     <Layers size={16} /> <span className="text-xs md:text-sm">{ui.buildMode}</span>
                 </button>
                 <button
                     onClick={() => { setMode('challenge'); setChallengeStatus('idle'); }}
-                    className={`flex-1 py-2 rounded-lg border font-bold transition-all flex items-center justify-center gap-2 active:scale-95 touch-manipulation ${mode === 'challenge' ? 'bg-amber-100 border-amber-300 text-[#7B1113] dark:bg-amber-900/40 dark:text-amber-200 dark:border-amber-700' : (theme === 'dark' ? 'bg-slate-800 border-slate-700 text-gray-400' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50')} text-xs md:text-sm`}
+                    className={`flex-1 py-2 rounded-lg border font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 hover:scale-[1.02] touch-manipulation ${mode === 'challenge' ? 'bg-amber-100 border-amber-300 text-[#7B1113] dark:bg-amber-900/40 dark:text-amber-200 dark:border-amber-700' : (theme === 'dark' ? 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50')} text-xs md:text-sm`}
                 >
                     <Trophy size={16} /> <span className="text-xs md:text-sm">{ui.challengeMode}</span>
                 </button>
@@ -131,25 +138,25 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
             <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-3">
                 <div className="space-y-3">
                     {mode === 'challenge' && (
-                        <div className={`border p-3 rounded-xl relative overflow-hidden shadow-sm ${theme === 'dark' ? 'bg-amber-900/10 border-amber-800' : 'bg-amber-50 border-amber-200'}`}>
-                            <div className="absolute top-0 right-0 p-1 bg-[#7B1113] text-white text-[10px] font-bold px-2 rounded-bl-lg">{ui.challengeMode} {challengeIdx + 1}</div>
+                        <div className={`border p-3 rounded-xl relative overflow-hidden shadow-sm transition-all duration-500 animate-in slide-in-from-left-4 ${theme === 'dark' ? 'bg-amber-900/10 border-amber-800' : 'bg-amber-50 border-amber-200'}`}>
+                            <div className="absolute top-0 right-0 p-1 bg-[#7B1113] text-white text-[10px] font-bold px-2 rounded-bl-lg shadow-sm">{ui.challengeMode} {challengeIdx + 1}</div>
                             <h3 className={`font-serif text-lg font-bold mb-1 ${theme === 'dark' ? 'text-amber-400' : 'text-[#7B1113]'}`}>{currentChallenge.name}</h3>
                             <p className={`text-xs mb-2 leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{currentChallenge.description}</p>
 
                             {challengeStatus === 'error' && (
-                                <div className={`border p-3 rounded-lg text-sm flex gap-2 items-start animate-fade-in ${theme === 'dark' ? 'bg-red-900/30 border-red-800 text-red-200' : 'bg-red-50 border-red-200 text-red-700'}`}>
+                                <div className={`border p-3 rounded-lg text-sm flex gap-2 items-start animate-in fade-in zoom-in duration-300 ${theme === 'dark' ? 'bg-red-900/30 border-red-800 text-red-200' : 'bg-red-50 border-red-200 text-red-700'}`}>
                                     <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
                                     <span>{ui.incorrect} {ui.help}: {currentChallenge.hint}</span>
                                 </div>
                             )}
 
                             {challengeStatus === 'success' && (
-                                <div className={`border p-3 rounded-lg text-sm flex flex-col gap-3 animate-fade-in ${theme === 'dark' ? 'bg-emerald-900/30 border-emerald-800 text-emerald-200' : 'bg-emerald-50 border-emerald-200 text-emerald-700'}`}>
+                                <div className={`border p-3 rounded-lg text-sm flex flex-col gap-3 animate-in fade-in zoom-in duration-300 ${theme === 'dark' ? 'bg-emerald-900/30 border-emerald-800 text-emerald-200' : 'bg-emerald-50 border-emerald-200 text-emerald-700'}`}>
                                     <div className="flex items-center gap-2">
                                         <CheckCircle className="w-4 h-4" />
                                         <span className="font-bold">{ui.success}</span>
                                     </div>
-                                    <button onClick={nextChallenge} className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-xs font-bold transition w-full md:w-auto shadow-sm">
+                                    <button onClick={nextChallenge} className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 w-full md:w-auto shadow-sm">
                                         {ui.next}
                                     </button>
                                 </div>
@@ -157,7 +164,7 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                         </div>
                     )}
 
-                    <div className={`p-3 rounded-xl border shadow-lg space-y-3 ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
+                    <div className={`p-3 rounded-xl border shadow-lg space-y-3 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
                         <div>
                             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">1. Root (Hetu)</h3>
                             <div className="grid grid-cols-2 gap-2">
@@ -165,7 +172,7 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                                     <button
                                         key={r}
                                         onClick={() => setRoot(r as any)}
-                                        className={`p-2 rounded-lg border text-[10px] md:text-xs font-medium capitalize transition active:scale-95 touch-manipulation ${root === r ? 'bg-[#7B1113] border-[#7B1113] text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
+                                        className={`p-2 rounded-lg border text-[10px] md:text-xs font-medium capitalize transition-all duration-200 active:scale-95 hover:scale-[1.02] touch-manipulation ${root === r ? 'bg-[#7B1113] border-[#7B1113] text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
                                     >
                                         {translateKey(r)}
                                     </button>
@@ -180,7 +187,7 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                                     <button
                                         key={f}
                                         onClick={() => setFeeling(f as any)}
-                                        className={`flex-1 p-2 rounded-lg border text-[10px] md:text-xs font-medium capitalize transition active:scale-95 touch-manipulation ${feeling === f ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
+                                        className={`flex-1 p-2 rounded-lg border text-[10px] md:text-xs font-medium capitalize transition-all duration-200 active:scale-95 hover:scale-[1.02] touch-manipulation ${feeling === f ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
                                     >
                                         {translateKey(f)}
                                     </button>
@@ -195,7 +202,7 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                                     <button
                                         key={v}
                                         onClick={() => setView(v as any)}
-                                        className={`flex-1 p-2 rounded-lg border text-[10px] md:text-xs font-medium capitalize transition active:scale-95 touch-manipulation ${view === v ? 'bg-teal-600 border-teal-600 text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
+                                        className={`flex-1 p-2 rounded-lg border text-[10px] md:text-xs font-medium capitalize transition-all duration-200 active:scale-95 hover:scale-[1.02] touch-manipulation ${view === v ? 'bg-teal-600 border-teal-600 text-white shadow-md' : (theme === 'dark' ? 'bg-slate-700 border-slate-600 text-gray-300 hover:bg-slate-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100')}`}
                                     >
                                         {translateKey(v)}
                                     </button>
@@ -207,17 +214,17 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                     {mode === 'challenge' && challengeStatus !== 'success' && (
                         <button
                             onClick={checkChallenge}
-                            className={`w-full py-4 rounded-xl font-bold text-lg shadow-xl transition-all active:scale-95 touch-manipulation ${theme === 'dark' ? 'bg-slate-100 text-slate-900 hover:bg-white' : 'bg-gray-900 hover:bg-black text-white'}`}
+                            className={`w-full py-4 rounded-xl font-bold text-lg shadow-xl transition-all duration-300 active:scale-95 hover:scale-[1.02] touch-manipulation ${theme === 'dark' ? 'bg-slate-100 text-slate-900 hover:bg-white' : 'bg-gray-900 hover:bg-black text-white'}`}
                         >
                             {ui.check}
                         </button>
                     )}
                 </div>
 
-                <div className={`rounded-xl p-5 border flex flex-col items-center justify-center relative min-h-[250px] shadow-inner ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-gray-100 border-gray-200'}`}>
+                <div className={`rounded-xl p-5 border flex flex-col items-center justify-center relative min-h-[250px] shadow-inner transition-colors duration-500 ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-gray-100 border-gray-200'}`}>
                     {warnings.length > 0 && (
-                        <div className={`absolute inset-4 backdrop-blur-sm border flex flex-col items-center justify-center p-4 text-center rounded-2xl z-20 animate-in fade-in zoom-in duration-200 shadow-xl ${theme === 'dark' ? 'bg-slate-900/95 border-red-800' : 'bg-white/95 border-red-200'}`}>
-                            <XCircle className="w-10 h-10 text-red-600 mb-3" />
+                        <div className={`absolute inset-4 backdrop-blur-sm border flex flex-col items-center justify-center p-4 text-center rounded-2xl z-20 animate-in fade-in zoom-in duration-300 shadow-xl ${theme === 'dark' ? 'bg-slate-900/95 border-red-800' : 'bg-white/95 border-red-200'}`}>
+                            <XCircle className="w-10 h-10 text-red-600 mb-3 animate-bounce" />
                             <h3 className={`text-base font-bold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>{ui.wrongConfig}</h3>
                             {warnings.map((w, i) => (
                                 <p key={i} className="text-red-500 text-xs md:text-sm mb-1">{w}</p>
@@ -226,7 +233,7 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                     )}
 
                     <div className="relative">
-                        <div className={`w-28 h-28 md:w-36 md:h-36 rounded-full transition-all duration-1000 ${getOrbColor()} flex items-center justify-center`}>
+                        <div className={`w-28 h-28 md:w-36 md:h-36 rounded-full transition-all duration-1000 ${getOrbColor()} flex items-center justify-center animate-pulse-glow`}>
                             <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border border-white/30 flex items-center justify-center">
                                 <div className="w-12 h-12 md:w-20 md:h-20 rounded-full border border-white/20"></div>
                             </div>
@@ -234,11 +241,11 @@ const CittaBuilder: React.FC<CittaBuilderProps> = ({ language, theme }) => {
                     </div>
 
                     <div className="text-center mt-5 relative z-10">
-                        <h2 className={`text-lg md:text-xl font-serif font-bold mb-1 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{getResultName()}</h2>
+                        <h2 className={`text-lg md:text-xl font-serif font-bold mb-1 transition-all duration-300 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{getResultName()}</h2>
                         <div className="flex gap-2 justify-center mt-2 flex-wrap">
-                            <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(root)}</span>
-                            <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(feeling)}</span>
-                            {view !== 'none' && <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(view)}</span>}
+                            <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider transition-colors ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(root)}</span>
+                            <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider transition-colors ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(feeling)}</span>
+                            {view !== 'none' && <span className={`text-[10px] md:text-xs border px-2 py-1 rounded uppercase tracking-wider transition-colors ${theme === 'dark' ? 'bg-slate-800 border-slate-600 text-gray-400' : 'bg-white border-gray-300 text-gray-500'}`}>{translateKey(view)}</span>}
                         </div>
                     </div>
                 </div>

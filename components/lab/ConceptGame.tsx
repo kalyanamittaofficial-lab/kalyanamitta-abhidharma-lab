@@ -81,7 +81,7 @@ const ConceptGame: React.FC<ConceptGameProps> = ({ language, theme }) => {
                 </span>
             </div>
 
-            <div className={`border rounded-xl p-4 md:p-5 shadow-lg relative overflow-hidden transition-all duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
+            <div key={currentCardIndex} className={`border rounded-xl p-4 md:p-5 shadow-lg relative overflow-hidden transition-all duration-300 animate-in slide-in-from-right-8 fade-in duration-500 ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
                 <div className={`absolute top-0 left-0 h-1 w-full ${theme === 'dark' ? 'bg-slate-700' : 'bg-gray-100'}`}>
                     <div
                         className="h-full bg-[#7B1113] transition-all duration-500 ease-out"
@@ -100,7 +100,7 @@ const ConceptGame: React.FC<ConceptGameProps> = ({ language, theme }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <button
                             onClick={() => handleGuess('concept')}
-                            className={`p-3 md:p-4 rounded-xl border transition-all group flex flex-col items-center active:scale-[0.98] touch-manipulation shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-slate-700 hover:bg-slate-600 border-slate-600' : 'bg-gray-50 hover:bg-indigo-50 border-gray-200 hover:border-indigo-200 active:bg-gray-100'}`}
+                            className={`p-3 md:p-4 rounded-xl border transition-all duration-200 group flex flex-col items-center active:scale-[0.98] hover:scale-[1.02] touch-manipulation shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-slate-700 hover:bg-slate-600 border-slate-600' : 'bg-gray-50 hover:bg-indigo-50 border-gray-200 hover:border-indigo-200 active:bg-gray-100'}`}
                         >
                             <div className={`p-2.5 rounded-full mb-2 group-hover:scale-110 transition duration-300 shadow-sm border ${theme === 'dark' ? 'bg-slate-600 border-slate-500' : 'bg-white border-gray-100'}`}>
                                 <Layers className="w-6 h-6 text-indigo-500" />
@@ -110,7 +110,7 @@ const ConceptGame: React.FC<ConceptGameProps> = ({ language, theme }) => {
                         </button>
                         <button
                             onClick={() => handleGuess('reality')}
-                            className={`p-3 md:p-4 rounded-xl border transition-all group flex flex-col items-center active:scale-[0.98] touch-manipulation shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-slate-700 hover:bg-slate-600 border-slate-600' : 'bg-gray-50 hover:bg-amber-50 border-gray-200 hover:border-amber-200 active:bg-gray-100'}`}
+                            className={`p-3 md:p-4 rounded-xl border transition-all duration-200 group flex flex-col items-center active:scale-[0.98] hover:scale-[1.02] touch-manipulation shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-slate-700 hover:bg-slate-600 border-slate-600' : 'bg-gray-50 hover:bg-amber-50 border-gray-200 hover:border-amber-200 active:bg-gray-100'}`}
                         >
                             <div className={`p-2.5 rounded-full mb-2 group-hover:scale-110 transition duration-300 shadow-sm border ${theme === 'dark' ? 'bg-slate-600 border-slate-500' : 'bg-white border-gray-100'}`}>
                                 <Circle className="w-6 h-6 text-amber-500" />
@@ -120,15 +120,15 @@ const ConceptGame: React.FC<ConceptGameProps> = ({ language, theme }) => {
                         </button>
                     </div>
                 ) : (
-                    <div className={`p-4 rounded-xl border animate-fade-in ${feedback.correct ? (theme === 'dark' ? 'bg-emerald-900/20 border-emerald-800' : 'bg-emerald-50 border-emerald-200') : (theme === 'dark' ? 'bg-red-900/20 border-red-800' : 'bg-red-50 border-red-200')}`}>
+                    <div className={`p-4 rounded-xl border animate-in fade-in zoom-in duration-300 ${feedback.correct ? (theme === 'dark' ? 'bg-emerald-900/20 border-emerald-800' : 'bg-emerald-50 border-emerald-200') : (theme === 'dark' ? 'bg-red-900/20 border-red-800' : 'bg-red-50 border-red-200')}`}>
                         <div className="flex items-center gap-2 mb-2">
-                            {feedback.correct ? <CheckCircle className="text-emerald-500 w-5 h-5" /> : <XCircle className="text-red-500 w-5 h-5" />}
+                            {feedback.correct ? <CheckCircle className="text-emerald-500 w-5 h-5 animate-bounce" /> : <XCircle className="text-red-500 w-5 h-5 animate-shake" />}
                             <span className={`font-bold text-base ${feedback.correct ? (theme === 'dark' ? 'text-emerald-300' : 'text-emerald-800') : (theme === 'dark' ? 'text-red-300' : 'text-red-800')}`}>
                                 {feedback.correct ? ui.correct : ui.incorrect}
                             </span>
                         </div>
                         <p className={`mb-3 text-sm leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{feedback.text}</p>
-                        <button onClick={nextCard} className="w-full py-2.5 bg-[#7B1113] hover:bg-[#901416] rounded-lg text-white font-bold transition flex items-center justify-center gap-2 shadow-sm shadow-red-900/10 active:scale-[0.98] touch-manipulation text-sm">
+                        <button onClick={nextCard} className="w-full py-2.5 bg-[#7B1113] hover:bg-[#901416] rounded-lg text-white font-bold transition-all hover:scale-[1.02] flex items-center justify-center gap-2 shadow-sm shadow-red-900/10 active:scale-[0.98] touch-manipulation text-sm">
                             {ui.next} <ArrowRight size={16} />
                         </button>
                     </div>

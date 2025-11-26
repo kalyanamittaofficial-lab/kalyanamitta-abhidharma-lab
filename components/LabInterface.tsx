@@ -34,15 +34,23 @@ export const LabInterface: React.FC<LabInterfaceProps> = ({ module, language, th
   };
 
   const renderContent = () => {
-    switch (module.id) {
-      case 'intro': return <ConceptGame language={language} theme={theme} />;
-      case 'citta': return <CittaBuilder language={language} theme={theme} />;
-      case 'vithi': return <ProcessViewer language={language} theme={theme} />;
-      case 'cetasika': return <CetasikaTable language={language} theme={theme} />;
-      case 'rupa': return <ElementMixer language={language} theme={theme} />;
-      case 'kamma': return <KammaMechanismLab language={language} theme={theme} />;
-      default: return <div className="text-center text-gray-500 py-20"><p>Module under construction.</p></div>;
-    }
+    const content = (() => {
+      switch (module.id) {
+        case 'intro': return <ConceptGame language={language} theme={theme} />;
+        case 'citta': return <CittaBuilder language={language} theme={theme} />;
+        case 'vithi': return <ProcessViewer language={language} theme={theme} />;
+        case 'cetasika': return <CetasikaTable language={language} theme={theme} />;
+        case 'rupa': return <ElementMixer language={language} theme={theme} />;
+        case 'kamma': return <KammaMechanismLab language={language} theme={theme} />;
+        default: return <div className="text-center text-gray-500 py-20"><p>Module under construction.</p></div>;
+      }
+    })();
+
+    return (
+      <div key={module.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-forwards">
+        {content}
+      </div>
+    );
   };
 
   return (
