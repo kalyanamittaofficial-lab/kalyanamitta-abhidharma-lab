@@ -38,7 +38,7 @@ const App: React.FC = () => {
       setIsMobile(mobile);
       if (!mobile) {
         setIsSidebarOpen(true);
-        setIsTutorOpen(true);
+        // setIsTutorOpen(true); // Default to closed
       }
     };
     checkMobile();
