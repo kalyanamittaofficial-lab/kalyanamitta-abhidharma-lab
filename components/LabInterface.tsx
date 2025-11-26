@@ -47,47 +47,47 @@ export const LabInterface: React.FC<LabInterfaceProps> = ({ module, language, th
 
   return (
     <div className="h-full flex flex-col overflow-y-auto custom-scrollbar p-2 md:p-4 safe-pb-20">
-      <header className="mb-1 md:mb-2">
-        <div className="flex items-center gap-1.5 text-[#7B1113] mb-0.5 md:mb-1">
-          <span className="text-[8px] font-bold tracking-widest uppercase border border-[#7B1113]/30 px-1 py-0.5 rounded">Module</span>
-          <span className="text-[8px] font-bold tracking-widest uppercase text-gray-500">ID: {module.id}</span>
+      <header className="mb-2 md:mb-3">
+        <div className="flex items-center gap-2 text-[#7B1113] mb-1">
+          <span className="text-[10px] font-bold tracking-widest uppercase border border-[#7B1113]/30 px-1.5 py-0.5 rounded">Module</span>
+          <span className="text-[10px] font-bold tracking-widest uppercase text-gray-500">ID: {module.id}</span>
         </div>
-        <h1 className={`text-xl md:text-2xl font-serif font-bold mb-0.5 md:mb-1 tracking-tight leading-tight ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{module.title}</h1>
-        <p className={`text-xs max-w-3xl leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{module.description}</p>
+        <h1 className={`text-2xl md:text-3xl font-serif font-bold mb-1 tracking-tight leading-tight ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{module.title}</h1>
+        <p className={`text-sm max-w-3xl leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{module.description}</p>
       </header>
 
       <div className="flex-1 max-w-6xl mx-auto w-full">
         {renderContent()}
 
         {/* Universal Analysis Tool */}
-        <div className={`mt-2 mb-10 md:mb-0 border rounded-lg p-2 relative overflow-hidden shadow-md ${theme === 'dark' ? 'bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700' : 'bg-gradient-to-br from-gray-50 to-white border-gray-200'}`}>
-          <div className="absolute top-0 right-0 p-16 bg-[#7B1113]/5 blur-xl rounded-full pointer-events-none"></div>
-          <div className="flex items-center gap-1.5 mb-1 relative z-10">
-            <Brain className="text-[#7B1113]" size={16} />
-            <h3 className={`text-sm md:text-base font-serif font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{language === 'si' ? 'AI චිත්ත විශ්ලේෂණය' : 'AI Mind Analysis'}</h3>
+        <div className={`mt-3 mb-10 md:mb-0 border rounded-xl p-3 relative overflow-hidden shadow-md ${theme === 'dark' ? 'bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700' : 'bg-gradient-to-br from-gray-50 to-white border-gray-200'}`}>
+          <div className="absolute top-0 right-0 p-20 bg-[#7B1113]/5 blur-xl rounded-full pointer-events-none"></div>
+          <div className="flex items-center gap-2 mb-1.5 relative z-10">
+            <Brain className="text-[#7B1113]" size={18} />
+            <h3 className={`text-base md:text-lg font-serif font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{language === 'si' ? 'AI චිත්ත විශ්ලේෂණය' : 'AI Mind Analysis'}</h3>
           </div>
-          <p className={`mb-2 relative z-10 max-w-lg text-[10px] md:text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{language === 'si' ? 'ඔබට දිනපතා ජීවිතයේ දැනෙන සිතිවිලි (උදා: කේන්තිය, ආශාව) ඇතුලත් කරන්න. AI මගින් එය විශ්ලේෂණය කරයි.' : 'Enter your daily thoughts or feelings. AI will analyze them according to Abhidharma.'}</p>
+          <p className={`mb-3 relative z-10 max-w-lg text-xs md:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{language === 'si' ? 'ඔබට දිනපතා ජීවිතයේ දැනෙන සිතිවිලි (උදා: කේන්තිය, ආශාව) ඇතුලත් කරන්න. AI මගින් එය විශ්ලේෂණය කරයි.' : 'Enter your daily thoughts or feelings. AI will analyze them according to Abhidharma.'}</p>
 
-          <div className="flex flex-col md:flex-row gap-1.5 relative z-10 max-w-xl">
+          <div className="flex flex-col md:flex-row gap-2 relative z-10 max-w-xl">
             <input
               type="text"
               value={scenarioInput}
               onChange={(e) => setScenarioInput(e.target.value)}
               placeholder={ui.analyzePlaceholder}
-              className={`flex-1 border rounded px-2 py-1.5 md:px-3 md:py-1.5 focus:outline-none focus:ring-1 focus:ring-[#7B1113]/50 shadow-inner text-xs ${theme === 'dark' ? 'bg-slate-950 border-slate-700 text-gray-100 placeholder-slate-600' : 'bg-white border-gray-300 text-gray-900'}`}
+              className={`flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#7B1113]/50 shadow-inner text-sm ${theme === 'dark' ? 'bg-slate-950 border-slate-700 text-gray-100 placeholder-slate-600' : 'bg-white border-gray-300 text-gray-900'}`}
             />
             <button
               onClick={handleAnalyze}
               disabled={isAnalyzing || !scenarioInput}
-              className="bg-[#7B1113] hover:bg-[#901416] text-white px-3 py-1.5 md:py-1.5 rounded font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-1.5 shadow-sm shadow-red-900/10 active:scale-95 touch-manipulation text-xs"
+              className="bg-[#7B1113] hover:bg-[#901416] text-white px-4 py-2 rounded-lg font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm shadow-red-900/10 active:scale-95 touch-manipulation text-sm"
             >
-              {isAnalyzing ? <span className="animate-spin">⌛</span> : <PlayCircle size={14} />}
+              {isAnalyzing ? <span className="animate-spin">⌛</span> : <PlayCircle size={16} />}
               {ui.analyze}
             </button>
           </div>
 
           {analysisResult && (
-            <div ref={resultRef} className={`mt-2 p-2 md:p-3 rounded border leading-5 text-[10px] md:text-xs prose max-w-none relative z-10 shadow-sm animate-fade-in ${theme === 'dark' ? 'bg-slate-950 border-slate-800 text-gray-300' : 'bg-white border-gray-200 text-gray-800'}`}>
+            <div ref={resultRef} className={`mt-3 p-3 rounded-lg border leading-relaxed text-xs md:text-sm prose max-w-none relative z-10 shadow-sm animate-fade-in ${theme === 'dark' ? 'bg-slate-950 border-slate-800 text-gray-300' : 'bg-white border-gray-200 text-gray-800'}`}>
               <div className="whitespace-pre-wrap">{analysisResult}</div>
             </div>
           )}
